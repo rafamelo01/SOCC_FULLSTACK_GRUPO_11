@@ -1,4 +1,4 @@
-# Projeto de Gerenciamento de Usuários
+# Escopo MANTER USUÁRIOS do projeto SOCC
 
 Este projeto é uma parte do escopo do projeto SOCC utilizando **Spring Boot**, **Spring Data JPA** e **H2 Database** para gerenciar usuários e realizar operações de alteração de status, perfil e carga horária mínima (para docentes).
 
