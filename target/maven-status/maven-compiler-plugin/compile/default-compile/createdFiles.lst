@@ -1,0 +1,5 @@
+Models\Perfil.class
+Repository\UsuarioRepository.class
+Models\Status.class
+Models\Usuario.class
+run\socc_manterusuario\TesteUsuarios.class
