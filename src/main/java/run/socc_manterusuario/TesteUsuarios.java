@@ -20,6 +20,10 @@ public class TesteUsuarios implements CommandLineRunner {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
+    private static final String RESET = "\u001B[0m";
+
     public static void main(String[] args) {
         SpringApplication.run(TesteUsuarios.class, args);
     }
@@ -37,67 +41,66 @@ public class TesteUsuarios implements CommandLineRunner {
         // Persiste os usuários no banco
         usuarioRepository.save(diretor);
         usuarioRepository.save(aluno);
-        
-        System.out.println("Status inicial da Maria: " + aluno.getStatus());
-        
+
+        System.out.println(GREEN + "Status inicial da Maria: " + aluno.getStatus() + RESET);
+
         // Diretor altera o status de Maria
         try {
             aluno.alterarStatus(Status.INATIVO, diretor);
-            usuarioRepository.save(aluno);  // Salva a alteração
-            System.out.println("Novo status da Maria: " + aluno.getStatus());
+            usuarioRepository.save(aluno);
+            System.out.println(GREEN + "Novo status da Maria: " + aluno.getStatus() + RESET);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar status: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar status: " + e.getMessage() + RESET);
         }
-        
+
         // Tenta alterar o perfil de Maria com outro aluno como solicitante
         Usuario jose = new Usuario("José Estudante", "jose", "jose@escola.com");
         jose.setPerfis(Arrays.asList(Perfil.DISCENTE));
-        
+
         try {
             aluno.alterarPerfil(Arrays.asList(Perfil.DOCENTE), jose);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar perfil: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar perfil: " + e.getMessage() + RESET);
         }
-        
+
         // Tenta alterar carga horaria de um usuario que possui somente o perfil DISCENTE
         try {
-            System.out.println("carga horária minima: " + aluno.getCargaHorariaMinima());
+            System.out.println(GREEN + "Carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
             aluno.alterarCargaHorariaMinima(32, diretor);
-            usuarioRepository.save(aluno);  
-            System.out.println("Nova carga horária minima: " + aluno.getCargaHorariaMinima());
+            usuarioRepository.save(aluno);
+            System.out.println(GREEN + "Nova carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar carga horaria minima: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar carga horária mínima: " + e.getMessage() + RESET);
         }
-        
+
         // Diretor altera o perfil da Maria
         try {
             aluno.alterarPerfil(Arrays.asList(Perfil.DOCENTE), diretor);
             aluno.setCargaHorariaMinima(64);
-            usuarioRepository.save(aluno);  
-            System.out.println("Perfis da Maria: " + aluno.getPerfis());
+            usuarioRepository.save(aluno);
+            System.out.println(GREEN + "Perfis da Maria: " + aluno.getPerfis() + RESET);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar perfil: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar perfil: " + e.getMessage() + RESET);
         }
-        
+
         // Altera a carga horária mínima do perfil DOCENTE sendo o DIRETOR um solicitante 
         try {
-            System.out.println("carga horária minima: " + aluno.getCargaHorariaMinima());
+            System.out.println(GREEN + "Carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
             aluno.alterarCargaHorariaMinima(32, diretor);
-            usuarioRepository.save(aluno);  
-            System.out.println("Nova carga horária minima: " + aluno.getCargaHorariaMinima());
+            usuarioRepository.save(aluno);
+            System.out.println(GREEN + "Nova carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar carga horaria minima: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar carga horária mínima: " + e.getMessage() + RESET);
         }
-        
+
         // Tenta alterar a carga horária mínima usando um perfil de DISCENTE (não permitido) apenas diretores ou vice-diretores
         try {
-            System.out.println("carga horária minima: " + aluno.getCargaHorariaMinima());
+            System.out.println(GREEN + "Carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
             aluno.alterarCargaHorariaMinima(32, jose);
-            usuarioRepository.save(aluno);  
-            System.out.println("Nova carga horária minima: " + aluno.getCargaHorariaMinima());
+            usuarioRepository.save(aluno);
+            System.out.println(GREEN + "Nova carga horária mínima: " + aluno.getCargaHorariaMinima() + RESET);
         } catch (Exception e) {
-            System.out.println("Erro ao alterar carga horaria minima: " + e.getMessage());
+            System.out.println(RED + "Erro ao alterar carga horária mínima: " + e.getMessage() + RESET);
         }
-        
     }
 }
