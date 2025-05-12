@@ -52,21 +52,24 @@ Este pacote contém a classe principal que inicializa a aplicação e executa a 
 | Alterar perfil                | Diretor ou Vice-Diretor           |
 | Alterar carga horária mínima  | Diretor ou Vice-Diretor **e** o usuário deve ser DOCENTE |
 
-## Como Executar
+## Endpoints de Usuários
 
-### 1. Clonar o Repositório
+### 1. **Exportar Usuários**
+Endpoint para exportar todos os usuários do sistema.
 
-Clone este repositório em sua máquina:
+- **Método HTTP**: `GET`
+- **URL**: `http://localhost:8080/usuarios/exportar`
 
-```bash
-git clone https://github.com/rafamelo01/SOCC_FULLSTACK_GRUPO_11.git
+### 2. **Alterar Carga Horária**
+Endpoint para Alteração de Carga Horária de Usuários Docentes.
 
-```
-### 2. Executar o projeto com o MAVEN
-
-Comandos:
-
-```
-mvn clean install
-mvn spring-boot:run
-```
+- **Método HTTP**: `POST`
+- **URL**: `http://localhost:8080/usuarios/alterarCargaHoraria`
+- **Body** (JSON):
+  ```json
+  {
+      "usuarioId": 2,
+      "novaCargaHorariaMinima": "64",
+      "solicitanteId": 1
+  }
+  ```
