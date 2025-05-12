@@ -50,9 +50,14 @@ public class Usuario {
 
     // Construtores, getters e setters
 
+    public Long getID() {
+        return this.id;
+    }
+
     public String getNome() {
         return this.nome;
     }
+
 
     public String getUsuario() {
         return this.usuario;

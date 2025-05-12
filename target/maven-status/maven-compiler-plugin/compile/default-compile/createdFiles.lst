@@ -1,5 +1,8 @@
-Models\Perfil.class
+Models\Dto\AlteracaoCargaHorariaDTO.class
+Models\Entity\Perfil.class
+Service\UsuarioService.class
 Repository\UsuarioRepository.class
-Models\Status.class
-Models\Usuario.class
+Models\Entity\Status.class
+Models\Entity\Usuario.class
 run\socc_manterusuario\TesteUsuarios.class
+Controller\UsuarioController.class

@@ -17,13 +17,14 @@ public class UsuarioService {
         List<Usuario> usuarios = usuarioRepository.findAll();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Nome,Usuário,Email,Status,Perfis,Carga Horária Mínima\n");
+        sb.append("Id,Nome,Usuário,Email,Status,Perfis,Carga Horária Mínima\n");
 
         for (Usuario u : usuarios) {
             String perfis = u.getPerfis() != null
                     ? String.join(";", u.getPerfis().stream().map(Enum::name).collect(Collectors.toList()))
                     : "";
 
+            sb.append(escape(String.valueOf(u.getID()))).append(",");
             sb.append(escape(u.getNome())).append(",");
             sb.append(escape(u.getUsuario())).append(",");
             sb.append(escape(u.getEmail())).append(",");

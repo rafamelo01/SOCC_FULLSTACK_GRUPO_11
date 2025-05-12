@@ -1,5 +1,8 @@
-C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Perfil.java
-C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Status.java
-C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Usuario.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Controller\UsuarioController.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Dto\AlteracaoCargaHorariaDTO.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Entity\Perfil.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Entity\Status.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Models\Entity\Usuario.java
 C:\Users\Rafael\git\socc-manterusuario\src\main\java\Repository\UsuarioRepository.java
 C:\Users\Rafael\git\socc-manterusuario\src\main\java\run\socc_manterusuario\TesteUsuarios.java
+C:\Users\Rafael\git\socc-manterusuario\src\main\java\Service\UsuarioService.java
