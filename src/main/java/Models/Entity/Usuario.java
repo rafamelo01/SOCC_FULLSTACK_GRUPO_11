@@ -1,4 +1,4 @@
-package Models;
+package Models.Entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
