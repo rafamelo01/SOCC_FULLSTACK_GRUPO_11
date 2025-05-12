@@ -33,37 +33,40 @@ public class TesteUsuarios implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Cria um diretor (pode alterar status/perfis)
-        Usuario diretor = new Usuario("João Diretor", "joao", "joao@escola.com");
-        diretor.setPerfis(Arrays.asList(Perfil.DIRETOR));
+        if (!usuarioRepository.existsByEmail("joao@escola.com")){
+            Usuario diretor = new Usuario("João Diretor", "joao", "joao@escola.com");
+            diretor.setPerfis(Arrays.asList(Perfil.DIRETOR));
+            usuarioRepository.save(diretor);
 
-        // Cria um usuário professor/docente
-        Usuario professora = new Usuario("Maria Aluna", "maria", "maria@escola.com");
-        professora.setPerfis(Arrays.asList(Perfil.DOCENTE));
-
-        // Persiste os usuários no banco
-        usuarioRepository.save(diretor);
-        usuarioRepository.save(professora);
-
-        System.out.println(GREEN + "Status inicial da Maria: " + professora.getStatus() + RESET);
-
-        // Diretor altera o status de Maria
-        try {
-            professora.alterarStatus(Status.INATIVO, diretor);
-            usuarioRepository.save(professora);
-            System.out.println(GREEN + "Novo status da Maria: " + professora.getStatus() + RESET);
-        } catch (Exception e) {
-            System.out.println(RED + "Erro ao alterar status: " + e.getMessage() + RESET);
-        }
-
-        // Tenta alterar o perfil de Maria com outro aluno como solicitante
-        Usuario jose = new Usuario("José Estudante", "jose", "jose@escola.com");
-        jose.setPerfis(Arrays.asList(Perfil.DISCENTE));
-        usuarioRepository.save(jose);
-
-        try {
-            professora.alterarPerfil(Arrays.asList(Perfil.DISCENTE), jose);
-        } catch (Exception e) {
-            System.out.println(RED + "Erro ao alterar perfil: " + e.getMessage() + RESET);
+            if (!usuarioRepository.existsByEmail("maria@escola.com")){
+                // Cria um usuário professor/docente
+                Usuario professora = new Usuario("Maria Aluna", "maria", "maria@escola.com");
+                professora.setPerfis(Arrays.asList(Perfil.DOCENTE));
+        
+                // Persiste os usuários no banco
+                usuarioRepository.save(professora);
+                System.out.println(GREEN + "Status inicial da Maria: " + professora.getStatus() + RESET);
+    
+                // Diretor altera o status de Maria
+                try {
+                    professora.alterarStatus(Status.INATIVO, diretor);
+                    usuarioRepository.save(professora);
+                    System.out.println(GREEN + "Novo status da Maria: " + professora.getStatus() + RESET);
+                } catch (Exception e) {
+                    System.out.println(RED + "Erro ao alterar status: " + e.getMessage() + RESET);
+                }
+        
+                // Tenta alterar o perfil de Maria com outro aluno como solicitante
+                Usuario jose = new Usuario("José Estudante", "jose", "jose@escola.com");
+                jose.setPerfis(Arrays.asList(Perfil.DISCENTE));
+                usuarioRepository.save(jose);
+        
+                try {
+                    professora.alterarPerfil(Arrays.asList(Perfil.DISCENTE), jose);
+                } catch (Exception e) {
+                    System.out.println(RED + "Erro ao alterar perfil: " + e.getMessage() + RESET);
+                }
+            }
         }
 
         // // Tenta alterar carga horaria de um usuario que possui somente o perfil DISCENTE
