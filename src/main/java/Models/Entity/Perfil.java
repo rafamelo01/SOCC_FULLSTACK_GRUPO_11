@@ -1,4 +1,4 @@
-package Models;
+package Models.Entity;
 
 public enum Perfil {
     DIRETOR,

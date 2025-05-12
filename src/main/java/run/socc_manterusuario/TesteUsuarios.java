@@ -7,9 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import Models.Perfil;
-import Models.Usuario;
-import Models.Status;
+import Models.Entity.Perfil;
+import Models.Entity.Usuario;
+import Models.Entity.Status;
 import Repository.UsuarioRepository;
 
 @SpringBootApplication
