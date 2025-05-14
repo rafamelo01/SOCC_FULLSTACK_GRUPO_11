@@ -63,8 +63,8 @@ Endpoint para exportar todos os usuários do sistema.
 ### 2. **Alterar Carga Horária**
 Endpoint para Alteração de Carga Horária de Usuários Docentes.
 
-- **Método HTTP**: `POST`
-- **URL**: `http://localhost:8080/usuarios/alterarCargaHoraria`
+- **Método HTTP**: `PUT`
+- **URL**: `http://localhost:8080/usuarios/carga_horaria`
 - **Body** (JSON):
   ```json
   {
