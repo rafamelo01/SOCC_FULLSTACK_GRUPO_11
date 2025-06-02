@@ -54,6 +54,11 @@ public class UsuarioService {
             value = value.replace("\"", "\"\"");
             return "\"" + value + "\"";
         }
-        return value;
+        return value    ;
     }
+
+    public List<Usuario> listarTodosUsuarios() {
+    return usuarioRepository.findAll();
+    }
+
 }

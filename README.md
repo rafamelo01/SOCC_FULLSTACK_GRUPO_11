@@ -54,7 +54,7 @@ Este pacote contém a classe principal que inicializa a aplicação e executa a 
 
 ## Endpoints de Usuários
 
-### 1. **Exportar Usuários**
+### 1. **Exportar Usuários CSV**
 Endpoint para exportar todos os usuários do sistema.
 
 - **Método HTTP**: `GET`
@@ -73,3 +73,17 @@ Endpoint para Alteração de Carga Horária de Usuários Docentes.
       "solicitanteId": 1
   }
   ```
+
+### 3. **Listar todos os Usuários**
+Endpoint para listar todos os usuários do sistema.
+
+- **Método HTTP**: `GET`
+- **URL**: `http://localhost:8080/usuarios`
+
+  
+### Executar o projeto com o MAVEN
+Comandos:
+```
+mvn clean install
+mvn spring-boot:run
+```

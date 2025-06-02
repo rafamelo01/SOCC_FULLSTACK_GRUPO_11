@@ -1,6 +1,7 @@
 package Controller;
 
 import Models.Dto.AlteracaoCargaHorariaDTO;
+import Models.Entity.Usuario;
 import Service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -40,4 +42,13 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Erro: " + ex.getMessage());
         }
     }
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarTodosUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    
+
 }
