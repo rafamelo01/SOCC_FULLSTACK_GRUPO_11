@@ -1,0 +1,71 @@
+<div class="container">
+  <h2>Exibir Usuários</h2>
+
+  <div *ngIf="loading" class="status-message">Carregando usuários...</div>
+  <div *ngIf="error" class="status-message error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && usuarios.length > 0">
+    <div class="search-container">
+      <input type="text" placeholder="Digite o usuário" [(ngModel)]="filtro" />
+      <button class="filter-btn">🔍</button>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Perfil</th>
+          <th>CH Mínima</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuariosFiltrados">
+          <td>{{ usuario.usuario }}</td>
+          <td>{{ usuario.nome }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.perfis }}</td>
+          <td>{{ usuario.cargaHorariaMinima }}</td>
+          <td>
+            <span class="status" [ngClass]="usuario.status === 'ATIVO' ? 'active' : 'suspended'">
+              {{ usuario.status === 'ATIVO' ? 'Ativo' : 'Suspenso' }}
+            </span>
+            
+          </td>
+          <td class="actions">
+            <button class="icon-button" (click)="abrirDialogoCargaHoraria(usuario)">✏️</button>
+            
+            <button class="icon-button">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <button class="export-btn">Exportar CSV</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && usuarios.length === 0" class="status-message">Nenhum usuário encontrado.</div>
+</div>
+
+<!-- Modal de Edição de Carga Horária -->
+<div class="modal" *ngIf="usuarioEditando">
+  <div class="modal-content">
+    <h3>Editar Carga Horária</h3>
+    <p>Usuário: <strong>{{ usuarioEditando.nome }}</strong></p>
+
+    <label>
+      Nova Carga Horária:
+      <input type="number" [(ngModel)]="novaCargaHoraria" />
+    </label>
+
+    <div class="modal-actions">
+      <button class="btn cancel" (click)="cancelarEdicao()">Cancelar</button>
+      <button class="btn confirm" (click)="confirmarEdicao()">Confirmar</button>
+    </div>
+  </div>
+</div>
