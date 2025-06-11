@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioService, Usuario } from '../services/usuario.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Usuario } from '../../model/usuario.model';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
+  standalone: true,
   selector: 'app-lista-usuarios',
-  templateUrl: './lista-usuarios.component.html',
-  imports: [CommonModule,FormsModule,],
-  styleUrls: ['./lista-usuarios.component.css']
+  imports: [CommonModule, FormsModule,],
+  templateUrl: './lista-usuarios.html',
+  styleUrl: './lista-usuarios.css'
 })
-export class ListaUsuariosComponent implements OnInit {
+export class ListaUsuarios implements OnInit {
   usuarios: Usuario[] = [];
   filtro: string = '';
   loading: boolean = false;
@@ -24,42 +26,40 @@ export class ListaUsuariosComponent implements OnInit {
     this.carregarUsuarios();
   }
 
-
-
-// Abre o modal
-abrirDialogoCargaHoraria(usuario: Usuario): void {
-  this.usuarioEditando = usuario;
-  this.novaCargaHoraria = usuario.cargaHorariaMinima ?? 0;
-}
-
-// Fecha sem salvar
-cancelarEdicao(): void {
-  this.usuarioEditando = null;
-  this.novaCargaHoraria = null;
-}
-
-// Salva e chama a API
-confirmarEdicao(): void {
-  if (this.usuarioEditando && this.novaCargaHoraria !== null) {
-    const solicitanteId = 1; // Substituir futuramente com ID do usuário autenticado 
-
-    this.usuarioService.atualizarCargaHorariaMinima(
-      this.usuarioEditando.id,
-      this.novaCargaHoraria,
-      solicitanteId
-    ).subscribe({
-      next: () => {
-        this.usuarioEditando!.cargaHorariaMinima = this.novaCargaHoraria;
-        this.usuarioEditando = null;
-        this.novaCargaHoraria = null;
-        alert('Carga horária atualizada com sucesso!');
-      },
-      error: () => {
-        alert('Erro ao atualizar carga horária.');
-      }
-    });
+  // Abre o modal
+  abrirDialogoCargaHoraria(usuario: Usuario): void {
+    this.usuarioEditando = usuario;
+    this.novaCargaHoraria = usuario.cargaHorariaMinima ?? 0;
   }
-}
+
+  // Fecha sem salvar
+  cancelarEdicao(): void {
+    this.usuarioEditando = null;
+    this.novaCargaHoraria = null;
+  }
+
+  // Salva e chama a API
+  confirmarEdicao(): void {
+    if (this.usuarioEditando && this.novaCargaHoraria !== null) {
+      const solicitanteId = 1; // Substituir futuramente com ID do usuário autenticado 
+
+      this.usuarioService.atualizarCargaHorariaMinima(
+        this.usuarioEditando.id,
+        this.novaCargaHoraria,
+        solicitanteId
+      ).subscribe({
+        next: () => {
+          this.usuarioEditando!.cargaHorariaMinima = this.novaCargaHoraria;
+          this.usuarioEditando = null;
+          this.novaCargaHoraria = null;
+          alert('Carga horária atualizada com sucesso!');
+        },
+        error: () => {
+          alert('Erro ao atualizar carga horária.');
+        }
+      });
+    }
+  }
 
   carregarUsuarios(): void {
     this.loading = true;
