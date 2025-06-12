@@ -54,7 +54,8 @@ export class ListaUsuarios implements OnInit {
           this.novaCargaHoraria = null;
           alert('Carga horária atualizada com sucesso!');
         },
-        error: () => {
+        error: (err) => {
+          console.error('Erro:', err);
           alert('Erro ao atualizar carga horária.');
         }
       });
