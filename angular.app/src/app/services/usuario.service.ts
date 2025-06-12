@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Usuario } from '../model/usuario.model';
 import { environment } from '../environments/environment';
 
@@ -21,10 +21,20 @@ atualizarCargaHorariaMinima(usuarioId: number, novaCargaHorariaMinima: number, s
   const body = {
     usuarioId: usuarioId,
     novaCargaHorariaMinima: novaCargaHorariaMinima,
-    solicitanteID: solicitanteId
+    solicitanteId: solicitanteId
   };
 
-  return this.http.put(url, body);
+  return this.http.put<any>(url, body, { observe: 'response' }).pipe(
+    map((response: HttpResponse<any>) => {
+      if (response.status !== 200) {
+        throw new Error('Erro ao atualizar carga horária');
+      }
+      return response.body;
+    }),
+    catchError((err) => {
+      return throwError(() => err);
+    })
+  );
 }
 
 
