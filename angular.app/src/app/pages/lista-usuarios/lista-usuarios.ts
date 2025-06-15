@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Usuario } from '../../model/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   standalone: true,
@@ -21,7 +22,7 @@ export class ListaUsuarios implements OnInit {
   solicitanteId: number | null = null; // ID do perfil selecionado
   showPerfilDialog = false; // controla modal seleção perfil
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private usuarioService: UsuarioService, private notificationService: NotificationService) {}
 
 
   ngOnInit(): void {
@@ -63,12 +64,13 @@ export class ListaUsuarios implements OnInit {
           this.usuarioEditando!.cargaHorariaMinima = this.novaCargaHoraria;
           this.usuarioEditando = null;
           this.novaCargaHoraria = null;
-          alert('Carga horária atualizada com sucesso!');
+          this.notificationService.show('Carga horária atualizada com sucesso!', 'success');
         },
         error: (err) => {
           console.error('Erro:', err);
           const mensagem = err?.message || 'Erro ao atualizar carga horária.';
-          alert(mensagem);
+          this.notificationService.show(mensagem, 'error');
+          this.fecharDialogo();
         }
       });
     }
@@ -101,10 +103,10 @@ export class ListaUsuarios implements OnInit {
         .subscribe({
           next: () => {
             usuario.cargaHorariaMinima = novaCarga;
-            alert(`Carga horária atualizada com sucesso para ${usuario.nome}.`);
+            this.notificationService.show(`Carga horária atualizada com sucesso para ${usuario.nome}.`, "success");
           },
           error: () => {
-            alert('Erro ao atualizar a carga horária. Tente novamente.');
+            this.notificationService.show("Erro ao atualizar a carga horária. Tente novamente.", 'error');
           }
         });
     }
@@ -124,7 +126,7 @@ export class ListaUsuarios implements OnInit {
     },
     error: (err) => {
       console.error('Erro ao exportar CSV:', err);
-      alert('Erro ao exportar CSV. Tente novamente.');
+      this.notificationService.show('Erro ao exportar CSV. Tente novamente.', "error");
     }
   });
 }
@@ -138,4 +140,9 @@ export class ListaUsuarios implements OnInit {
       usuario.usuario.toLowerCase().includes(termo)
     );
   }
+  // função utilitária para fechar o modal
+private fecharDialogo(): void {
+  this.usuarioEditando = null;
+  this.novaCargaHoraria = null;
+}
 }

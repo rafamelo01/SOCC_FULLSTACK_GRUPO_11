@@ -1,0 +1,78 @@
+:host {
+  display: block;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.notification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 320px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #fff;
+  color: #202124;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeInSlide 0.3s ease forwards;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    border-radius: 6px 0 0 6px;
+  }
+
+  &.success {
+    background-color: #e6f4ea;
+  }
+
+  &.error {
+    background-color: #fce8e6;
+  }
+
+  &.info {
+    background-color: #e8f0fe;
+  }
+
+  &.success::before { background-color: #34a853; }
+  &.error::before { background-color: #ea4335; }
+  &.info::before { background-color: #4285f4; }
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  animation: progressBarAnim 5.0s linear forwards;
+
+  &.success { background-color: #34a853; }
+  &.error { background-color: #ea4335; }
+  &.info { background-color: #4285f4; }
+}
+
+@keyframes progressBarAnim {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
