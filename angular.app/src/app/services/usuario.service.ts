@@ -16,26 +16,31 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
   // Atualiza a carga horária mínima de um usuário
-atualizarCargaHorariaMinima(usuarioId: number, novaCargaHorariaMinima: number, solicitanteId: number): Observable<any> {
+atualizarCargaHorariaMinima(usuarioId: number, novaCargaHorariaMinima: number, solicitanteId: number): Observable<string> {
   const url = `${this.apiUrl}/carga_horaria`;
-  const body = {
-    usuarioId: usuarioId,
-    novaCargaHorariaMinima: novaCargaHorariaMinima,
-    solicitanteId: solicitanteId
-  };
+  const body = { usuarioId, novaCargaHorariaMinima, solicitanteId };
 
-  return this.http.put<any>(url, body, { observe: 'response' }).pipe(
-    map((response: HttpResponse<any>) => {
-      if (response.status !== 200) {
-        throw new Error('Erro ao atualizar carga horária');
+  return this.http.put<{ mensagem: string }>(url, body).pipe(
+    map(response => response.mensagem),
+    catchError(err => {
+      // Tenta extrair a mensagem específica da resposta JSON
+      let msg = 'Erro desconhecido';
+      if (err.error && typeof err.error === 'object' && err.error.mensagem) {
+        msg = err.error.mensagem;
+      } else if (err.message) {
+        msg = err.message;
       }
-      return response.body;
-    }),
-    catchError((err) => {
-      return throwError(() => err);
+      return throwError(() => new Error(msg));
     })
   );
 }
+
+// Retorna o CSV como blob (binário)
+exportarUsuariosCSV(): Observable<Blob> {
+  const url = `${this.apiUrl}/exportar`;
+  return this.http.get(url, { responseType: 'blob' });
+}
+
 
 
 }

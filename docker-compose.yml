@@ -12,7 +12,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./angular.app
     container_name: angular-app
     ports:
       - "4200:80"

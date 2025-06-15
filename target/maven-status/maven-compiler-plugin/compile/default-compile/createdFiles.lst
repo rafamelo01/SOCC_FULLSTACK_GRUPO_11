@@ -5,4 +5,5 @@ Repository\UsuarioRepository.class
 Models\Entity\Status.class
 Models\Entity\Usuario.class
 run\socc_manterusuario\TesteUsuarios.class
+Models\Dto\ErrorResponse.class
 Controller\UsuarioController.class

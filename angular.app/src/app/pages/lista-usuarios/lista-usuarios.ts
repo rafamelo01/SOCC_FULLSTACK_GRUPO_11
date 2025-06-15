@@ -18,13 +18,26 @@ export class ListaUsuarios implements OnInit {
   error: string | null = null;
   usuarioEditando: Usuario | null = null;
   novaCargaHoraria: number | null = null;
-  
+  solicitanteId: number | null = null; // ID do perfil selecionado
+  showPerfilDialog = false; // controla modal seleção perfil
+
   constructor(private usuarioService: UsuarioService) {}
 
 
   ngOnInit(): void {
+    this.showPerfilDialog = true; // abre modal de escolha
+
+  }
+
+    // Chamado quando o usuário escolhe o perfil
+  selecionarPerfil(id: number): void {
+    this.solicitanteId = id;
+    this.showPerfilDialog = false;
+
+    // Agora pode carregar usuários, pois perfil selecionado
     this.carregarUsuarios();
   }
+
 
   // Abre o modal
   abrirDialogoCargaHoraria(usuario: Usuario): void {
@@ -40,13 +53,11 @@ export class ListaUsuarios implements OnInit {
 
   // Salva e chama a API
   confirmarEdicao(): void {
-    if (this.usuarioEditando && this.novaCargaHoraria !== null) {
-      const solicitanteId = 1; // Substituir futuramente com ID do usuário autenticado 
-
+    if (this.usuarioEditando && this.novaCargaHoraria !== null && this.solicitanteId !== null) {
       this.usuarioService.atualizarCargaHorariaMinima(
         this.usuarioEditando.id,
         this.novaCargaHoraria,
-        solicitanteId
+        this.solicitanteId
       ).subscribe({
         next: () => {
           this.usuarioEditando!.cargaHorariaMinima = this.novaCargaHoraria;
@@ -56,13 +67,16 @@ export class ListaUsuarios implements OnInit {
         },
         error: (err) => {
           console.error('Erro:', err);
-          alert('Erro ao atualizar carga horária.');
+          const mensagem = err?.message || 'Erro ao atualizar carga horária.';
+          alert(mensagem);
         }
       });
     }
   }
 
   carregarUsuarios(): void {
+    if (this.solicitanteId === null) return; // não carrega antes de escolher
+
     this.loading = true;
     this.error = null;
 
@@ -77,18 +91,15 @@ export class ListaUsuarios implements OnInit {
       }
     );
   }
+  
   editarCargaHoraria(usuario: Usuario): void {
     const novaCargaInput = prompt(`Informe a nova carga horária mínima para ${usuario.nome}:`, usuario.cargaHorariaMinima?.toString() || '0');
-  
     const novaCarga = novaCargaInput !== null ? parseInt(novaCargaInput, 10) : null;
-  
-    if (novaCarga !== null && !isNaN(novaCarga)) {
-      const solicitanteId = 1; // TODO: Substitua isso pelo ID real do solicitante (ex: vindo do AuthService)
-  
-      this.usuarioService.atualizarCargaHorariaMinima(usuario.id, novaCarga, solicitanteId)
+
+    if (novaCarga !== null && !isNaN(novaCarga) && this.solicitanteId !== null) {
+      this.usuarioService.atualizarCargaHorariaMinima(usuario.id, novaCarga, this.solicitanteId)
         .subscribe({
           next: () => {
-            // Atualiza localmente a carga horária
             usuario.cargaHorariaMinima = novaCarga;
             alert(`Carga horária atualizada com sucesso para ${usuario.nome}.`);
           },
@@ -99,7 +110,25 @@ export class ListaUsuarios implements OnInit {
     }
   }
 
-  
+
+  exportarCSV(): void {
+  this.usuarioService.exportarUsuariosCSV().subscribe({
+    next: (blob) => {
+      // Cria um link temporário para download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'usuarios.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Erro ao exportar CSV:', err);
+      alert('Erro ao exportar CSV. Tente novamente.');
+    }
+  });
+}
+
 
   // Filtro dinâmico com base em nome ou usuário
   get usuariosFiltrados(): Usuario[] {

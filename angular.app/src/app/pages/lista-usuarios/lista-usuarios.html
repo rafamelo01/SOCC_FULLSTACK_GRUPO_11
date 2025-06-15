@@ -10,43 +10,41 @@
       <button class="filter-btn">🔍</button>
     </div>
 
-    <table class="styled-table">
-      <thead>
-        <tr>
-          <th>Usuário</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Perfil</th>
-          <th>CH Mínima</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuariosFiltrados">
-          <td>{{ usuario.usuario }}</td>
-          <td>{{ usuario.nome }}</td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.perfis }}</td>
-          <td>{{ usuario.cargaHorariaMinima }}</td>
-          <td>
-            <span class="status" [ngClass]="usuario.status === 'ATIVO' ? 'active' : 'suspended'">
-              {{ usuario.status === 'ATIVO' ? 'Ativo' : 'Suspenso' }}
-            </span>
-            
-          </td>
-          <td class="actions">
-            <button class="icon-button" (click)="abrirDialogoCargaHoraria(usuario)">✏️</button>
-            
-            <button class="icon-button">🗑️</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Usuário</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Perfil</th>
+        <th>CH Mínima</th>
+        <th>Status</th>
+        <th *ngIf="solicitanteId === 1">Ações</th>  <!-- Só mostra cabeçalho Ações se diretor -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuariosFiltrados">
+        <td>{{ usuario.usuario }}</td>
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.perfis }}</td>
+        <td>{{ usuario.cargaHorariaMinima }}</td>
+        <td>
+          <span class="status" [ngClass]="usuario.status === 'ATIVO' ? 'active' : 'suspended'">
+            {{ usuario.status === 'ATIVO' ? 'Ativo' : 'Suspenso' }}
+          </span>
+        </td>
+        <td class="actions" *ngIf="solicitanteId === 1">
+          <button class="icon-button" (click)="abrirDialogoCargaHoraria(usuario)">✏️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-    <div class="footer">
-      <button class="export-btn">Exportar CSV</button>
-    </div>
+  <div class="footer">
+    <button *ngIf="solicitanteId === 1" (click)="exportarCSV()" class="export-btn">Exportar CSV</button>
+  </div>
+
   </div>
 
   <div *ngIf="!loading && usuarios.length === 0" class="status-message">Nenhum usuário encontrado.</div>
@@ -67,5 +65,15 @@
       <button class="btn cancel" (click)="cancelarEdicao()">Cancelar</button>
       <button class="btn confirm" (click)="confirmarEdicao()">Confirmar</button>
     </div>
+  </div>
+</div>
+
+
+<!-- Modal para seleção de perfil -->
+<div class="modal" *ngIf="showPerfilDialog">
+  <div class="modal-content">
+    <h3>Selecione o perfil para acessar</h3>
+    <button (click)="selecionarPerfil(1)">Diretor</button>
+    <button (click)="selecionarPerfil(2)">Docente</button>
   </div>
 </div>
