@@ -1,79 +1,156 @@
-<div class="container">
-  <h2>Exibir Usuários</h2>
+<!-- Modal de Seleção de Perfil -->
+<div class="modal" *ngIf="showPerfilDialog">
+<div class="modal-content">
+<h3>Selecione o perfil para acessar</h3>
+<div class="modal-actions">
+<button class="btn dir" (click)="selecionarPerfil(1)">Diretor</button>
+<button class="btn doc" (click)="selecionarPerfil(2)">Docente</button>
+</div>
+</div>
+</div>
 
-  <div *ngIf="loading" class="status-message">Carregando usuários...</div>
-  <div *ngIf="error" class="status-message error">{{ error }}</div>
-
-  <div *ngIf="!loading && !error && usuarios.length > 0">
-    <div class="search-container">
-      <input type="text" placeholder="Digite o usuário" [(ngModel)]="filtro" />
-      <button class="filter-btn">🔍</button>
+<!-- Barra superior -->
+<div class="main-wrapper">
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <div class="menu-toggle" (click)="toggleSidebar()">
+        <span class="material-symbols-outlined">menu</span>
+      </div>
+      <img src="https://raw.githubusercontent.com/rafamelo01/SOCC_FULLSTACK_GRUPO_11/refs/heads/main/Telas%20Exemplos/Telas/socc.png" alt="Logo SOCC" class="logo" />
     </div>
 
-  <table class="styled-table">
-    <thead>
-      <tr>
-        <th>Usuário</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Perfil</th>
-        <th>CH Mínima</th>
-        <th>Status</th>
-        <th *ngIf="solicitanteId === 1">Ações</th>  <!-- Só mostra cabeçalho Ações se diretor -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let usuario of usuariosFiltrados">
-        <td>{{ usuario.usuario }}</td>
-        <td>{{ usuario.nome }}</td>
-        <td>{{ usuario.email }}</td>
-        <td>{{ usuario.perfis }}</td>
-        <td>{{ usuario.cargaHorariaMinima }}</td>
-        <td>
-          <span class="status" [ngClass]="usuario.status === 'ATIVO' ? 'active' : 'suspended'">
-            {{ usuario.status === 'ATIVO' ? 'Ativo' : 'Suspenso' }}
-          </span>
-        </td>
-        <td class="actions" *ngIf="solicitanteId === 1">
-          <button class="icon-button" (click)="abrirDialogoCargaHoraria(usuario)">✏️</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="top-bar-right">
+      <div class="profile-icon">
+        <span class="material-symbols-outlined">person</span>
+      </div>
+    </div>
+  </header>
 
-  <div class="footer">
-    <button *ngIf="solicitanteId === 1" (click)="exportarCSV()" class="export-btn">Exportar CSV</button>
-  </div>
+  <!-- Menu Lateral -->
+  <aside
+    class="sidebar"
+    [class.collapsed]="isSidebarCollapsed"
+    id="sidebar"
+  >
+    <nav class="sidebar-nav">
+      <ul>
+        <li class="nav-item">
+          <a href="#">
+            <span class="material-symbols-outlined">home</span>
+            <span>Página Inicial</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a href="#">
+            <span class="material-symbols-outlined">group</span>
+            <span>Exibir Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
-  </div>
+<!-- Conteúdo Principal -->
+<div class="app-container">
+<main class="main-content" id="mainContent">
+<h2>Exibir Usuários</h2>
+<div class="container">
+<div>
+<div *ngIf="loading" class="status-message">Carregando usuários...</div>
+<div *ngIf="error" class="status-message error">{{ error }}</div>
 
-  <div *ngIf="!loading && usuarios.length === 0" class="status-message">Nenhum usuário encontrado.</div>
+<div *ngIf="!loading && !error && usuarios.length > 0">
+<div class="search-container">
+<input type="text" placeholder="Digite o usuário" [(ngModel)]="filtro" />
+<button class="filter-btn">🔍</button>
+</div>
+
+<table class="styled-table">
+<thead>
+<tr>
+<th class="sortable">Usuário <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th class="sortable">Nome <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th class="sortable">Email <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th class="sortable">Perfil <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th class="sortable">CH Mínima <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th class="sortable">Status <span class="material-symbols-outlined sort-icon">arrow_upward</span><span class="material-symbols-outlined sort-icon">arrow_downward</span></th>
+<th *ngIf="solicitanteId === 1">Ações</th>
+</tr>
+</thead>
+
+<tbody>
+<tr *ngFor="let usuario of usuariosFiltrados">
+<td>{{ usuario.usuario }}</td>
+<td>{{ usuario.nome }}</td>
+<td>{{ usuario.email }}</td>
+<td>{{ usuario.perfis }}</td>
+<td>{{ usuario.cargaHorariaMinima }}</td>
+<td>
+<span class="status" [ngClass]="usuario.status === 'ATIVO' ? 'active' : 'suspended'">
+{{ usuario.status === 'ATIVO' ? 'Ativo' : 'Suspenso' }}
+</span>
+</td>
+<td class="actions" *ngIf="solicitanteId === 1">
+<button class="icon-button" (click)="abrirDialogoCargaHoraria(usuario)">✏️</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- Caso não encontrar nenhum usuário -->
+<div *ngIf="!loading && usuarios.length === 0" class="status-message">
+Nenhum usuário encontrado.
+</div>
+</div>
+</div>
+
+<!-- Footer com Botão e Paginação -->
+<div class="header-summary">
+<div class="footer">
+  <button *ngIf="solicitanteId === 1" (click)="exportarCSV()" class="export-btn">Exportar CSV</button>
+</div>
+<div class="table-summary">
+<div class="pagination">
+<label for="itemsPerPage">Itens por página</label>
+<select id="itemsPerPage">
+<option value="5">5</option>
+<option value="10">10</option>
+<option value="20">20</option>
+</select>
+<span>16-20 de 100</span>
+<div class="pagination-controls">
+<button>&lt;&lt;</button>
+<button>&lt;</button>
+<button>&gt;</button>
+<button>&gt;&gt;</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<!-- Rodapé -->
+<footer class="bottom-footer">
+    <img src="https://raw.githubusercontent.com/rafamelo01/SOCC_FULLSTACK_GRUPO_11/refs/heads/main/Telas%20Exemplos/Telas/socc_ufg.png" alt="Logo SOCC_UFG" class="logo2" />
+    <span class="copyright">UFG Copyright © 2024</span>
+</footer>
+
+</div>
 </div>
 
 <!-- Modal de Edição de Carga Horária -->
 <div class="modal" *ngIf="usuarioEditando">
-  <div class="modal-content">
-    <h3>Editar Carga Horária</h3>
-    <p>Usuário: <strong>{{ usuarioEditando.nome }}</strong></p>
-
-    <label>
-      Nova Carga Horária:
-      <input type="number" [(ngModel)]="novaCargaHoraria" />
-    </label>
-
-    <div class="modal-actions">
-      <button class="btn cancel" (click)="cancelarEdicao()">Cancelar</button>
-      <button class="btn confirm" (click)="confirmarEdicao()">Confirmar</button>
-    </div>
-  </div>
+<div class="modal-content">
+<h3>Editar Carga Horária</h3>
+<p>Usuário: <strong>{{ usuarioEditando.nome }}</strong></p>
+<label>
+Nova Carga Horária:
+<input type="number" [(ngModel)]="novaCargaHoraria" />
+</label>
+<div class="modal-actions">
+<button class="btn cancel" (click)="cancelarEdicao()">Cancelar</button>
+<button class="btn confirm" (click)="confirmarEdicao()">Confirmar</button>
 </div>
-
-
-<!-- Modal para seleção de perfil -->
-<div class="modal" *ngIf="showPerfilDialog">
-  <div class="modal-content">
-    <h3>Selecione o perfil para acessar</h3>
-    <button (click)="selecionarPerfil(1)">Diretor</button>
-    <button (click)="selecionarPerfil(2)">Docente</button>
-  </div>
+</div>
 </div>
