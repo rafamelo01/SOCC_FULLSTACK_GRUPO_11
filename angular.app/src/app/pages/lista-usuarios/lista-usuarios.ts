@@ -21,6 +21,7 @@ export class ListaUsuarios implements OnInit {
   novaCargaHoraria: number | null = null;
   solicitanteId: number | null = null; // ID do perfil selecionado
   showPerfilDialog = false; // controla modal seleção perfil
+  isSidebarCollapsed = true; // controla o estado da sidebar
 
   constructor(private usuarioService: UsuarioService, private notificationService: NotificationService) {}
 
@@ -30,10 +31,21 @@ export class ListaUsuarios implements OnInit {
 
   }
 
-    // Chamado quando o usuário escolhe o perfil
-  selecionarPerfil(id: number): void {
-    this.solicitanteId = id;
-    this.showPerfilDialog = false;
+  toggleSidebar() {
+  this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  const mainContent = document.getElementById('mainContent');
+
+  if (this.isSidebarCollapsed) {
+    mainContent?.classList.remove('collapsed');
+  } else {
+    mainContent?.classList.add('collapsed');
+  }
+}
+
+// Chamado quando o usuário escolhe o perfil
+selecionarPerfil(id: number): void {
+  this.solicitanteId = id;
+  this.showPerfilDialog = false;
 
     // Agora pode carregar usuários, pois perfil selecionado
     this.carregarUsuarios();
@@ -93,7 +105,7 @@ export class ListaUsuarios implements OnInit {
       }
     );
   }
-  
+
   editarCargaHoraria(usuario: Usuario): void {
     const novaCargaInput = prompt(`Informe a nova carga horária mínima para ${usuario.nome}:`, usuario.cargaHorariaMinima?.toString() || '0');
     const novaCarga = novaCargaInput !== null ? parseInt(novaCargaInput, 10) : null;
@@ -145,4 +157,5 @@ private fecharDialogo(): void {
   this.usuarioEditando = null;
   this.novaCargaHoraria = null;
 }
+
 }
