@@ -35,21 +35,17 @@ public class UsuarioController {
         response.setContentType("text/csv; charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=usuarios.csv");
 
-        // Pega OutputStream e escreve com OutputStreamWriter UTF-8
+        
         try (OutputStream os = response.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
             BufferedWriter writer = new BufferedWriter(osw)) {
-
-            // Escrever BOM UTF-8 (opcional, mas recomendado para Excel)
+            
             writer.write('\uFEFF');
-
-            // Gera o CSV
+            
             String csv = usuarioService.exportarTodosUsuarios();
 
-            // Se quiser trocar vírgula por ponto e vírgula para Excel PT-BR:
             csv = csv.replace(",", ";");
 
-            // Escreve CSV
             writer.write(csv);
         }
     }
