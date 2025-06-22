@@ -10,11 +10,13 @@ O sistema permite:
 
 ## Estrutura do Projeto
 
-O projeto é dividido em três pacotes principais dentro de **src/main**:
+O projeto é dividido em cinco pacotes principais dentro de **src/main**:
 
 1. **Models**: Contém as classes de modelo que representam as entidades do banco de dados.
 2. **Repository**: Contém os repositórios JPA para realizar operações de persistência.
-3. **run.socc_manterusuario**: Contém a classe de inicialização do Spring Boot (`TesteUsuarios`) e a lógica de execução.
+3. **Controller**: Contém a classe controladora UsuarioController responsável por receber as requisições de alteração de carga horária e exportação de usuários.
+4. **Service**: Contém a classe UsuarioService com os métodos responsáveis por interagir com os objetos e persistir as alterações no banco com o JPA.
+5. **run.socc_manterusuario**: Contém a classe de inicialização do Spring Boot (`TesteUsuarios`) e a lógica de execução e criação de usuários teste.
 
 ## Pacotes e Explicação
 
