@@ -5,11 +5,8 @@ Este projeto é uma parte do escopo do projeto SOCC utilizando **Spring Boot**, 
 ## Funcionalidade
 
 O sistema permite:
-
-- Criar usuários com diferentes perfis.
-- Alterar o **status** de um usuário (somente **Diretores** ou **Vice-Diretores** podem fazer isso).
-- Alterar o **perfil** de um usuário (também restrito a **Diretores** ou **Vice-Diretores**).
 - Alterar a **carga horária mínima** de um usuário **com perfil DOCENTE**, somente se o solicitante for um **Diretor** ou **Vice-Diretor**.
+- Exportar dados dos usuários em planilha, somente se o solicitante for um **Diretor** ou **Vice-Diretor**.
 
 ## Estrutura do Projeto
 
