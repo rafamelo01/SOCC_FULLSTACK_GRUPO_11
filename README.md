@@ -18,6 +18,9 @@ O projeto é dividido em cinco pacotes principais dentro de **src/main**:
 4. **Service**: Contém a classe UsuarioService com os métodos responsáveis por interagir com os objetos e persistir as alterações no banco com o JPA.
 5. **run.socc_manterusuario**: Contém a classe de inicialização do Spring Boot (`TesteUsuarios`) e a lógica de execução e criação de usuários teste.
 
+## Banco de dados
+Contido no pacote **data**, o projeto utiliza o banco de dados H2, um banco relacional leve e embutido, desenvolvido em Java, que persiste os dados localmente em um arquivo no formato .mv.db.
+
 ## Pacotes e Explicação
 
 ### 1. **Models**
